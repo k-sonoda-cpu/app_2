@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fict-LAB | ちょっと楽しい架空サイト</title>
+  <meta name="description" content="Fict-LABは、遊び心で学べる“なんちゃって”研究所。デモ用の架空サイトです。" />
+  <style>
+    /* =========================
+       Base & Theme
+    ========================== */
+    :root{
+      --bg: #0b0f14;
+      --panel: #0f1720;
+      --text: #e7f0ff;
+      --muted: #9fb3c8;
+      --brand: #66d9ff;
+      --brand-2:#aeee6e;
+      --accent:#ffd166;
+      --ring: #66d9ff55;
+      --shadow: 0 10px 25px rgba(0,0,0,.35);
+      --radius: 18px;
+      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, "Hiragino Kaku Gothic ProN", "Yu Gothic UI", "Yu Gothic", "Meiryo", sans-serif;
+    }
+    :root.light{
+      --bg: #f8fafc;
+      --panel:#ffffff;
+      --text:#0a0f16;
+      --muted:#4b5563;
+      --brand:#2563eb;
+      --brand-2:#16a34a;
+      --accent:#f59e0b;
+      --ring:#2563eb33;
+      --shadow: 0 10px 24px rgba(2,8,23,.12);
+    }
+    html,body{height:100%}
+    body{
+      margin:0; background: radial-gradient(1200px 600px at 80% -10%, #122033, transparent 60%), var(--bg);
+      color:var(--text); font-family:var(--font); line-height:1.65;
+    }
+    a{color:var(--brand); text-decoration:none}
+    img{max-width:100%; display:block}
+    .container{width:min(1100px, 92%); margin-inline:auto}
+    .btn{--btn-bg:linear-gradient(90deg,var(--brand),var(--brand-2)); --btn-text:#001018;
+      display:inline-flex; align-items:center; gap:.6rem; border:none; padding:.9rem 1.2rem; border-radius:calc(var(--radius) - 6px);
+      background:var(--btn-bg); color:var(--btn-text); font-weight:700; cursor:pointer; box-shadow:var(--shadow); position:relative; isolation:isolate}
+    .btn:focus-visible{outline:3px solid var(--ring)}
+    .btn.ghost{background:transparent; color:var(--text); border:1px solid #ffffff22}
+
+    /* =========================
+       Header
+    ========================== */
+    header{
+      position:sticky; top:0; z-index:50; backdrop-filter:saturate(120%) blur(8px);
+      background:linear-gradient( to bottom, #0b0f14cc, #0b0f1400 );
+      border-bottom:1px solid #ffffff10;
+    }
+    .nav{display:flex; align-items:center; justify-content:space-between; padding:.8rem 0}
+    .brand{display:flex; align-items:center; gap:.7rem; font-weight:800; letter-spacing:.4px}
+    .logo{width:36px; height:36px; border-radius:12px; display:grid; place-items:center; font-weight:900; background:conic-gradient(from 180deg, var(--brand), var(--brand-2), var(--accent), var(--brand)); color:#031016}
+    .navlinks{display:flex; gap:1rem}
+    .navlinks a{padding:.6rem .8rem; border-radius:10px}
+    .navlinks a:hover{background:#ffffff10}
+    .right-controls{display:flex; align-items:center; gap:.6rem}
+    .toggle{display:inline-grid; place-items:center; width:40px; height:40px; border-radius:12px; border:1px solid #ffffff22; background:#00000020}
+    .burger{display:none}
+    @media (max-width: 780px){
+      .burger{display:inline-grid}
+      .navlinks{display:none}
+      .nav.open .navlinks{display:grid; gap:.4rem; position:absolute; inset:60px 4% auto; background:var(--panel); border:1px solid #ffffff16; border-radius:16px; padding:.6rem}
+      .nav.open .navlinks a{background:transparent}
+    }
+
+    /* =========================
+       Hero
+    ========================== */
+    .hero{padding: clamp(2rem, 7vw, 5.6rem) 0; position:relative}
+    .hero-grid{display:grid; grid-template-columns: 1.2fr 1fr; gap:2rem; align-items:center}
+    .hero h1{font-size:clamp(1.8rem, 5.2vw, 3.2rem); line-height:1.2; margin:.2rem 0}
+    .hero p{color:var(--muted)}
+    .hero-card{background:linear-gradient(180deg, #0b111a, #0a0e14); border: 1px solid #ffffff14; border-radius:var(--radius); padding:1.2rem; box-shadow:var(--shadow)}
+    .badge{display:inline-flex; gap:.5rem; align-items:center; font-size:.85rem; color:#0b141a; background:linear-gradient(90deg, var(--accent), #fff2b3); padding:.3rem .6rem; border-radius:999px}
+    .starfield{position:absolute; inset:0; pointer-events:none; mask-image: radial-gradient(80% 60% at 60% 10%, black, transparent 85%)}
+
+    /* =========================
+       Sections
+    ========================== */
+    section{padding: clamp(2rem, 6vw, 4rem) 0}
+    .section-title{font-size:clamp(1.4rem, 3.3vw, 2rem); margin-bottom:1rem}
+    .grid-3{display:grid; grid-template-columns: repeat(3, 1fr); gap:1rem}
+    @media (max-width: 980px){.hero-grid{grid-template-columns: 1fr} .grid-3{grid-template-columns: 1fr 1fr}}
+    @media (max-width: 640px){.grid-3{grid-template-columns: 1fr}}
+
+    .card{background:linear-gradient(180deg, var(--panel), color-mix(in oklab, var(--panel), #000 8%)); border:1px solid #ffffff12; border-radius:var(--radius); padding:1rem; box-shadow:var(--shadow); position:relative}
+    .card h3{margin:.2rem 0 .3rem}
+    .card p{color:var(--muted)}
+    .pill{display:inline-flex; gap:.4rem; align-items:center; font-size:.8rem; color:var(--text); border:1px dashed #ffffff30; padding:.2rem .5rem; border-radius:999px}
+    .like{position:absolute; right:.8rem; top:.8rem; display:inline-grid; place-items:center; width:36px; height:36px; border-radius:50%; border:1px solid #ffffff22; background:#00000020; cursor:pointer}
+    .like[data-liked="true"]{background:radial-gradient(circle at 30% 30%, #ffe08a, #ff7ab6)}
+    .like b{font-variant-numeric: tabular-nums}
+
+    /* =========================
+       Gallery
+    ========================== */
+    .gallery{display:grid; grid-template-columns: repeat(6, 1fr); gap:.6rem}
+    .gallery figure{aspect-ratio: 4 / 3; border-radius:14px; overflow:hidden; border:1px solid #ffffff14; position:relative}
+    .gallery figcaption{position:absolute; inset:auto 8px 8px 8px; background:#00000060; padding:.2rem .5rem; border-radius:8px; font-size:.85rem}
+    @media (max-width: 980px){.gallery{grid-template-columns: repeat(3, 1fr)}}
+    @media (max-width: 520px){.gallery{grid-template-columns: repeat(2, 1fr)}}
+
+    /* =========================
+       FAQ (details/summary)
+    ========================== */
+    details{border:1px solid #ffffff12; border-radius:14px; background:var(--panel); box-shadow:var(--shadow)}
+    details+details{margin-top:.6rem}
+    summary{list-style:none; padding:1rem; cursor:pointer; display:flex; align-items:center; justify-content:space-between}
+    summary::-webkit-details-marker{display:none}
+    summary span{font-weight:700}
+    .chev{transition:transform .25s ease}
+    details[open] .chev{transform:rotate(180deg)}
+    .faq-content{padding:0 1rem 1rem; color:var(--muted)}
+
+    /* =========================
+       Contact
+    ========================== */
+    form{display:grid; gap:.8rem}
+    .field{display:grid; gap:.3rem}
+    input, textarea{background:#00000020; color:var(--text); border:1px solid #ffffff22; border-radius:12px; padding:.8rem}
+    input:focus-visible, textarea:focus-visible{outline:3px solid var(--ring)}
+    .toast{position:fixed; right:18px; bottom:18px; background:var(--panel); color:var(--text); border:1px solid #ffffff22; border-radius:14px; padding:.8rem 1rem; box-shadow:var(--shadow); opacity:0; transform:translateY(10px); transition:opacity .25s, transform .25s}
+    .toast.show{opacity:1; transform:translateY(0)}
+
+    /* =========================
+       Footer
+    ========================== */
+    footer{padding:2rem 0; color:var(--muted); border-top:1px dashed #ffffff22}
+    .to-top{position:fixed; right:18px; bottom:18px; transform:translateY(80px); transition:transform .25s}
+    .to-top.show{transform:translateY(0)}
+  </style>
+</head>
+<body>
+  <!-- ========================= Header ========================= -->
+  <header>
+    <div class="container nav" id="nav">
+      <a class="brand" href="#top" aria-label="トップへ">
+        <span class="logo">FL</span>
+        <span>Fict-LAB</span>
+      </a>
+      <nav class="navlinks" aria-label="メイン">
+        <a href="#about">特徴</a>
+        <a href="#gallery">ギャラリー</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contact">お問い合わせ</a>
+      </nav>
+      <div class="right-controls">
+        <button class="toggle" id="themeToggle" aria-label="テーマ切替 (明/暗)">🌓</button>
+        <button class="toggle burger" id="burger" aria-label="メニュー">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================= Hero ========================= -->
+  <main id="top" class="hero">
+    <div class="container hero-grid">
+      <div>
+        <span class="badge">⚗️ 実験的 & 楽しい – デモサイト</span>
+        <h1>遊び心で学ぶ、<br>ちょっと不思議な研究所 <em style="font-style:normal; color:var(--accent)">Fict-LAB</em></h1>
+        <p>このページは <strong>HTML/CSS/JavaScript</strong> だけで構成されたシングルファイルの架空サイトです。デザイン、ナビゲーション、テーマ切替、フォーム検証、ちょっとしたアニメなど、学習のサンプルを詰め込みました。</p>
+        <div style="display:flex; gap:.6rem; flex-wrap:wrap; margin-top:.8rem">
+          <a class="btn" href="#about" id="cta">はじめる</a>
+          <button class="btn ghost" id="spark">きらめきを追加 ✨</button>
+        </div>
+      </div>
+      <div class="hero-card" aria-hidden="true">
+        <h3>今日の実験ログ</h3>
+        <ul>
+          <li>🔬 カラーテーマの切替テスト</li>
+          <li>📌 固定ヘッダーとミニメニュー</li>
+          <li>📖 折りたたみ式の質問コーナー</li>
+          <li>📨 入力フォームの検証実験</li>
+          <li>✨ 光るパーティクルの観察</li>
+        </ul>
+      </div>
+    </div>
+    <canvas class="starfield" id="starfield" aria-hidden="true"></canvas>
+  </main>
+
+  <!-- ========================= About ========================= -->
+  <section id="about">
+    <div class="container">
+      <h2 class="section-title">Fict-LAB の特徴</h2>
+      <div class="grid-3">
+        <article class="card">
+          <button class="like" aria-label="いいね" data-count="0"><b>0</b>⭐</button>
+          <span class="pill">UI コンポーネント</span>
+          <h3>必要十分な UI</h3>
+          <p>カード、バッジ、ピル、ボタン、トグル、モーダルの代わりにトーストなど、最低限の UI を自作。</p>
+        </article>
+        <article class="card">
+          <button class="like" aria-label="いいね" data-count="0"><b>0</b>⭐</button>
+          <span class="pill">アクセシビリティ</span>
+          <h3>意味のある HTML</h3>
+          <p>&lt;main&gt;、&lt;nav&gt;、&lt;section&gt;、&lt;article&gt; を適切に使い、キーボード操作やフォーカス状態にも配慮。</p>
+        </article>
+        <article class="card">
+          <button class="like" aria-label="いいね" data-count="0"><b>0</b>⭐</button>
+          <span class="pill">学習に最適</span>
+          <h3>コピペで使える</h3>
+          <p>一枚の HTML ファイルに CSS と JS を内蔵。部分的に切り出して自分のプロジェクトに利用可能。</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================= Gallery ========================= -->
+  <section id="gallery">
+    <div class="container">
+      <h2 class="section-title">ギャラリー（ランダム図形デモ）</h2>
+      <div class="gallery" aria-live="polite" id="galleryGrid"></div>
+      <div style="margin-top:.8rem; display:flex; gap:.6rem; flex-wrap:wrap">
+        <button class="btn" id="regen">ギャラリー再生成</button>
+        <button class="btn ghost" id="shuffle">並び替え</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================= FAQ ========================= -->
+  <section id="faq">
+    <div class="container">
+      <h2 class="section-title">FAQ</h2>
+      <details>
+        <summary><span>これは本物のサービスですか？</span> <span class="chev">⌃</span></summary>
+        <div class="faq-content">いいえ。学習・デモ用の <strong>架空サイト</strong> です。UI/UX の試作にどうぞ。</div>
+      </details>
+      <details>
+        <summary><span>商用で使っても良いですか？</span> <span class="chev">⌃</span></summary>
+        <div class="faq-content">このテンプレート自体は自由に利用・改変できます。画像などの外部素材は未使用です。</div>
+      </details>
+      <details>
+        <summary><span>学べるポイントは？</span> <span class="chev">⌃</span></summary>
+        <div class="faq-content">レスポンシブ設計、ダーク/ライトテーマ、状態保存、フォーム検証、DOM 操作、Canvas 描画、アクセシビリティなど。</div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ========================= Contact ========================= -->
+  <section id="contact">
+    <div class="container">
+      <h2 class="section-title">お問い合わせ</h2>
+      <form id="contactForm" novalidate>
+        <div class="field">
+          <label for="name">お名前</label>
+          <input id="name" name="name" placeholder="例）架空 太郎" required minlength="2" />
+        </div>
+        <div class="field">
+          <label for="email">メールアドレス</label>
+          <input id="email" name="email" type="email" placeholder="you@example.com" required />
+        </div>
+        <div class="field">
+          <label for="msg">メッセージ</label>
+          <textarea id="msg" name="msg" rows="4" placeholder="ご用件をどうぞ" required></textarea>
+        </div>
+        <div style="display:flex; gap:.6rem; flex-wrap:wrap; align-items:center">
+          <button class="btn" type="submit">送信する</button>
+          <span id="formHint" aria-live="polite" style="color:var(--muted)"></span>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <button class="btn to-top" id="toTop" aria-label="トップへ戻る">▲ トップへ</button>
+
+  <footer>
+    <div class="container" style="display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap">
+      <small>© <span id="year"></span> Fict-LAB – Fictional Demo</small>
+      <small><a href="#top">利用規約</a> ・ <a href="#top">プライバシー</a></small>
+    </div>
+  </footer>
+
+  <script>
+    // =========================
+    // Utilities
+    // =========================
+    const $ = (s, el=document) => el.querySelector(s);
+    const $$ = (s, el=document) => [...el.querySelectorAll(s)];
+
+    // =========================
+    // Theme (persist via localStorage)
+    // =========================
+    const root = document.documentElement;
+    const themeKey = 'mogu-theme';
+    const saved = localStorage.getItem(themeKey);
+    if(saved === 'light') root.classList.add('light');
+    $('#themeToggle').addEventListener('click', () => {
+      root.classList.toggle('light');
+      localStorage.setItem(themeKey, root.classList.contains('light') ? 'light' : 'dark');
+      toast(`テーマを ${root.classList.contains('light') ? 'ライト' : 'ダーク'} に切替えました`);
+    });
+
+    // =========================
+    // Mobile nav toggle
+    // =========================
+    const nav = $('#nav');
+    $('#burger').addEventListener('click', ()=> nav.classList.toggle('open'));
+    $$('.navlinks a').forEach(a=> a.addEventListener('click', ()=> nav.classList.remove('open')));
+
+    // =========================
+    // Starfield Canvas (background flair)
+    // =========================
+    const canvas = $('#starfield');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+    function resize(){ canvas.width = canvas.clientWidth; canvas.height = 360; }
+    function spawnStar(){
+      stars.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, s: Math.random()*1.6+0.4, v: Math.random()*0.3+0.1});
+      if(stars.length>200) stars.shift();
+    }
+    function draw(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      ctx.globalAlpha = .9; ctx.fillStyle = '#ffffff';
+      stars.forEach(st => { ctx.beginPath(); ctx.arc(st.x, st.y, st.s, 0, Math.PI*2); ctx.fill(); st.y += st.v; if(st.y>canvas.height) st.y=0; });
+      requestAnimationFrame(draw);
+    }
+    addEventListener('resize', resize); resize(); setInterval(spawnStar, 60); requestAnimationFrame(draw);
+
+    // =========================
+    // CTA Sparkles (particles on click)
+    // =========================
+    function burst(el){
+      const n = 16;
+      const rect = el.getBoundingClientRect();
+      for(let i=0;i<n;i++){
+        const p = document.createElement('span');
+        p.textContent = '✦';
+        p.style.position='fixed';
+        p.style.left = (rect.left + rect.width/2) + 'px';
+        p.style.top = (rect.top + rect.height/2) + 'px';
+        p.style.pointerEvents='none';
+        p.style.transition = 'transform .6s cubic-bezier(.2,.7,0,1), opacity .6s';
+        p.style.transform = `translate(${(Math.random()-0.5)*160}px, ${(Math.random()-0.5)*160}px) scale(${Math.random()*1+0.6})`;
+        p.style.opacity='1';
+        document.body.appendChild(p);
+        requestAnimationFrame(()=>{ p.style.opacity='0'; });
+        setTimeout(()=> p.remove(), 620);
+      }
+    }
+    $('#spark').addEventListener('click', (e)=> burst(e.currentTarget));
+
+    // =========================
+    // Like buttons on cards (with local state)
+    // =========================
+    $$('.like').forEach(btn => {
+      btn.addEventListener('click', ()=>{
+        const n = Number(btn.dataset.count||0) + 1;
+        btn.dataset.count = n; btn.querySelector('b').textContent = n;
+        btn.setAttribute('data-liked','true'); burst(btn);
+      });
+    });
+
+    // =========================
+    // Gallery (random SVG patterns)
+    // =========================
+    const grid = $('#galleryGrid');
+    function rand(min,max){return Math.floor(Math.random()*(max-min+1))+min}
+    function makeTile(i){
+      const hue = rand(180,320);
+      const a = rand(20,40)/100;
+      const b = rand(20,40)/100;
+      const svg = `<svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="g${i}" x1="0" x2="1">
+            <stop offset="0" stop-color="hsl(${hue} 80% 60% / ${a})"/>
+            <stop offset="1" stop-color="hsl(${(hue+60)%360} 90% 60% / ${b})"/>
+          </linearGradient>
+        </defs>
+        <rect width="160" height="120" fill="url(#g${i})"/>
+        <g fill="none" stroke="hsl(${(hue+200)%360} 90% 75% / .9)" stroke-width="${rand(1,3)}">
+          ${Array.from({length: rand(5,9)}, _ => `<path d="M${rand(0,30)} ${rand(10,110)} Q ${rand(60,100)} ${rand(0,120)}, ${rand(130,160)} ${rand(10,110)}" />`).join('')}
+        </g>
+        <g fill="hsl(${(hue+50)%360} 90% 60% / .8)">
+          ${Array.from({length: rand(6,14)}, _ => `<circle cx="${rand(10,150)}" cy="${rand(10,110)}" r="${rand(2,6)}" />`).join('')}
+        </g>
+      </svg>`;
+      const fig = document.createElement('figure');
+      fig.innerHTML = svg + `<figcaption>#${String(i+1).padStart(2,'0')}</figcaption>`;
+      return fig;
+    }
+    function buildGallery(n=12){ grid.innerHTML=''; for(let i=0;i<n;i++) grid.appendChild(makeTile(i)); }
+    function shuffle(){ [...grid.children].sort(()=>Math.random()-.5).forEach(el=>grid.appendChild(el)); }
+    buildGallery();
+    $('#regen').addEventListener('click', ()=>{ buildGallery(); toast('ギャラリーを再生成しました'); });
+    $('#shuffle').addEventListener('click', ()=>{ shuffle(); toast('並び替えました'); });
+
+    // =========================
+    // FAQ chevron toggles handled by CSS; nothing else needed
+    // =========================
+
+    // =========================
+    // Contact form validation (simple client-side)
+    // =========================
+    const form = $('#contactForm');
+    form.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(form).entries());
+      const errs = [];
+      if(!data.name || data.name.trim().length < 2) errs.push('お名前は2文字以上で入力してください');
+      if(!data.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) errs.push('メールアドレスの形式が正しくありません');
+      if(!data.msg || data.msg.trim().length < 5) errs.push('メッセージは5文字以上で入力してください');
+      const hint = $('#formHint');
+      if(errs.length){ hint.textContent = '⚠️ ' + errs.join(' / '); toast('入力内容をご確認ください'); return; }
+      hint.textContent=''; toast('送信しました！(ダミー)');
+      form.reset();
+    });
+
+    // =========================
+    // Toast & ToTop
+    // =========================
+    const toastEl = $('#toast');
+    let toastTimer;
+    function toast(msg){
+      toastEl.textContent = msg; toastEl.classList.add('show');
+      clearTimeout(toastTimer); toastTimer = setTimeout(()=> toastEl.classList.remove('show'), 2200);
+    }
+    const toTop = $('#toTop');
+    addEventListener('scroll', ()=>{ if(scrollY>400) toTop.classList.add('show'); else toTop.classList.remove('show'); });
+    toTop.addEventListener('click', ()=> window.scrollTo({top:0, behavior:'smooth'}));
+
+    // =========================
+    // Misc
+    // =========================
+    $('#year').textContent = new Date().getFullYear();
+
+    // Keyboard: press "g" to regenerate gallery for fun
+    addEventListener('keydown', (e)=>{ if(e.key.toLowerCase()==='g'){ buildGallery(); toast('ギャラリーを再生成 (G)'); }});
+  </script>
+</body>
+</html>
